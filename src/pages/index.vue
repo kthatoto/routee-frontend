@@ -1,13 +1,24 @@
 <template lang="pug">
 .index
-  h1 hey
+  .index__datepicker
+    .index__datePrev
+    .index__dateNext
 </template>
 
 <script>
 export default {
-  components: {}
+  data () {
+    return {
+      date: new Date()
+    }
+  },
+  created () {
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
+.index
+  &__datepicker
+    display: flex
 </style>
