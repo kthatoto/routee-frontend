@@ -1,8 +1,9 @@
 <template lang="pug">
 .index
   .index__datepicker
-    .index__datePrev
-    .index__dateNext
+    icon.icon(name="chevron-left")
+    .index__date {{ displayDate }}
+    icon.icon(name="chevron-right")
 </template>
 
 <script>
@@ -12,7 +13,10 @@ export default {
       date: new Date()
     }
   },
-  created () {
+  computed: {
+    displayDate () {
+      return `${this.date.getFullYear()}/${this.date.getMonth() + 1}/${this.date.getDate()}`
+    }
   }
 }
 </script>
