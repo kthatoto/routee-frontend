@@ -68,7 +68,6 @@ export default {
       padding: 3px 0
       width: 30px
       height: 30px
-      cursor: pointer
   &__date
     height: 30px
     line-height: 30px

@@ -11,6 +11,6 @@ div
   list-style: none
   text-decoration: none
 .-hover:hover
-  opacity: 0.6
+  opacity: 0.8
   cursor: pointer
 </style>
