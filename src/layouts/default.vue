@@ -10,4 +10,7 @@ div
   box-sizing: border-box
   list-style: none
   text-decoration: none
+.-hover:hover
+  opacity: 0.6
+  cursor: pointer
 </style>

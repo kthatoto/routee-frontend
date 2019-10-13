@@ -5,11 +5,11 @@
     h2
       span {{ title }}
       span(@click.stop)
-        icon.icon(name="ellipsis-v" @click.native="showingMenu = !showingMenu")
+        icon.icon.-hover(name="ellipsis-v" @click.native="showingMenu = !showingMenu")
     .routine__headerMenu(v-show="showingMenu")
-      .routine__headerMenuItem Create
-      .routine__headerMenuItem Edit
-      .routine__headerMenuItem Delete
+      .routine__headerMenuItem.-hover Create
+      .routine__headerMenuItem.-hover Edit
+      .routine__headerMenuItem.-hover Delete
 </template>
 
 <script>
@@ -51,7 +51,6 @@ export default {
       .icon
         width: 20px
         height: 20px
-        cursor: pointer
     &Menu
       position: absolute
       top: 100%

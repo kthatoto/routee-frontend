@@ -1,9 +1,9 @@
 <template lang="pug">
 .index
   .index__datepicker
-    icon.icon(name="chevron-left" @click.native="prevDate")
+    icon.icon.-hover(name="chevron-left" @click.native="prevDate")
     .index__date {{ displayHeaderDate }}
-    icon.icon(name="chevron-right" @click.native="nextDate")
+    icon.icon.-hover(name="chevron-right" @click.native="nextDate")
   .index__routines
     routines-column(type="daily" :dateLabel="displayDate")
     routines-column(type="weekly" :dateLabel="displayWeek")
