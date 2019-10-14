@@ -47,6 +47,9 @@ export default {
       this.$emit('cancel')
     },
     submit () {
+      this.$apiClient('get', 'http://0.0.0.0:3000').then((res) => {
+        window.console.log(res)
+      })
     }
   }
 }

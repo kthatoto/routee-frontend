@@ -29,7 +29,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~plugins/vue-awesome.js'
+    '~plugins/vue-awesome.js',
+    '~plugins/apiClient.js'
   ],
   /*
   ** Nuxt.js dev-modules
