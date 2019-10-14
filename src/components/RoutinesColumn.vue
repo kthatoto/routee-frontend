@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       showingMenu: false,
-      mode: 'create' // 'create' | 'edit' | 'delete'
+      mode: null // 'create' | 'edit' | 'delete'
     }
   },
   computed: {
