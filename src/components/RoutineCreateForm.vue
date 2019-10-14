@@ -35,18 +35,18 @@ export default {
       description: ''
     }
   },
-  methods: {
-    cancel () {
-      this.$emit('cancel')
-    },
-    submit () {
-    }
-  },
   watch: {
     countActive () {
       if (!this.countActive) {
         this.count = 1
       }
+    }
+  },
+  methods: {
+    cancel () {
+      this.$emit('cancel')
+    },
+    submit () {
     }
   }
 }
