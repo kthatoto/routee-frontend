@@ -42,12 +42,29 @@ export default {
       return `${this.date.getFullYear()}/${this.date.getMonth() + 1}`
     }
   },
+  async asyncData ({ app, error }) {
+    const date = new Date()
+    const dateQuery = `year=${date.getFullYear()}&month=${date.getMonth() + 1}&date=${date.getDate()}`
+    const res = await app.apiClient('get', `http://0.0.0.0:3000/home?${dateQuery}`).catch((err) => { return err.response })
+    return {
+      dailyRoutines: res.data.daily_routines,
+      weeklyRoutines: res.data.weekly_routines,
+      monthlyRoutines: res.data.monthly_routines
+    }
+  },
   methods: {
     prevDate () {
       this.date = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - 1)
     },
     nextDate () {
       this.date = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + 1)
+    },
+    async fetchResources () {
+      const dateQuery = `year=${this.date.getFullYear()}&month=${this.date.getMonth() + 1}&date=${this.date.getDate()}`
+      const res = await this.$apiClient('get', `http://0.0.0.0:3000/home?${dateQuery}`).catch((err) => { return err.response })
+      this.dailyRoutines = res.data.daily_routines
+      this.weeklyRoutines = res.data.weekly_routines
+      this.monthlyRoutines = res.data.monthly_routines
     }
   }
 }
