@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -34,6 +35,11 @@ export default {
       title: '',
       description: ''
     }
+  },
+  computed: {
+    ...mapGetters({
+      date: 'getDate'
+    })
   },
   watch: {
     countActive () {
@@ -49,7 +55,14 @@ export default {
     submit () {
       this.$apiClient('post',
         'http://0.0.0.0:3000/routines',
-        { count: 3 }
+        {
+          count: this.count,
+          title: this.title,
+          description: this.description,
+          year: this.date.getFullYear(),
+          month: this.date.getMonth() + 1,
+          date: this.date.getDate()
+        }
       ).then((res) => {
         window.console.log(res)
       })
