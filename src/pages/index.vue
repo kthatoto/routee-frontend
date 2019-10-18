@@ -11,12 +11,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import RoutinesColumn from '~/components/RoutinesColumn'
 export default {
   components: { RoutinesColumn },
   data () {
     return {
-      date: new Date(),
       dailyRoutines: [],
       weeklyRoutines: [],
       monthlyRoutines: []
@@ -40,6 +40,14 @@ export default {
     },
     displayMonth () {
       return `${this.date.getFullYear()}/${this.date.getMonth() + 1}`
+    },
+    ...mapGetters({
+      date: 'getDate'
+    })
+  },
+  watch: {
+    date () {
+      this.fetchResources()
     }
   },
   async asyncData ({ app, error }) {
@@ -54,10 +62,12 @@ export default {
   },
   methods: {
     prevDate () {
-      this.date = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - 1)
+      const prevDate = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - 1)
+      this.$store.commit('changeDate', prevDate)
     },
     nextDate () {
-      this.date = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + 1)
+      const nextDate = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + 1)
+      this.$store.commit('changeDate', nextDate)
     },
     async fetchResources () {
       const dateQuery = `year=${this.date.getFullYear()}&month=${this.date.getMonth() + 1}&date=${this.date.getDate()}`
