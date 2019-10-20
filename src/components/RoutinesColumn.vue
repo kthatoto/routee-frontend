@@ -16,7 +16,7 @@
       .routine__headerMenuItem.-hover(@click="mode = 'delete'")
         icon.icon(name="trash-alt")
         span Delete
-  routine-create-form(v-if="mode === 'create'" @cancel="clearMode")
+  routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type")
 </template>
 
 <script>

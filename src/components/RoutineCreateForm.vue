@@ -28,6 +28,9 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  props: {
+    type: { type: String, required: true } // 'daily' | 'weekly' | 'monthly'
+  },
   data () {
     return {
       countActive: false,
@@ -56,6 +59,7 @@ export default {
       this.$apiClient('post',
         'http://0.0.0.0:3000/routines',
         {
+          interval_type: this.type,
           count: this.count,
           title: this.title,
           description: this.description,
