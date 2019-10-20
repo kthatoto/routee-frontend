@@ -9,9 +9,9 @@
           @click="countActive = !countActive")
             .create__countButtonCircle(:class="{'-active': countActive}")
         input.create__countInput(v-model="count" :disabled="!countActive")
-      .create__title
-        .create__titleLabel title
-        input.create__titleInput(v-model="title")
+      .create__name
+        .create__nameLabel name
+        input.create__nameInput(v-model="name")
     .create__formBottom
       .create__description
         .create__descriptionLabel description
@@ -35,7 +35,7 @@ export default {
     return {
       countActive: false,
       count: 1,
-      title: '',
+      name: '',
       description: ''
     }
   },
@@ -61,7 +61,7 @@ export default {
         {
           interval_type: this.type,
           count: this.count,
-          title: this.title,
+          name: this.name,
           description: this.description,
           year: this.date.getFullYear(),
           month: this.date.getMonth() + 1,
@@ -145,7 +145,7 @@ export default {
       &[disabled=disabled]
         color: gray
         background-color: #eee
-  &__title
+  &__name
     width: calc(100% - 40px)
     &Label
       font-size: 11px

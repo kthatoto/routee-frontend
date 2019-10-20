@@ -17,6 +17,15 @@
         icon.icon(name="trash-alt")
         span Delete
   routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type")
+  .routine__list
+    .routine__item(v-for="routine in routines")
+      .routine__itemCheckbox
+      .routine__itemContent
+        .routine__itemCount
+          template(v-if="routine.target_count")
+            icon.icon(name="check-square")
+            span {{ routine.count }}/{{ routine.target_count }}
+        .routine__itemName {{ routine.name }}
 </template>
 
 <script>
@@ -25,7 +34,8 @@ export default {
   components: { RoutineCreateForm },
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
-    dateLabel: { type: String, required: true }
+    dateLabel: { type: String, required: true },
+    routines: { type: Array, required: false }
   },
   data () {
     return {
@@ -83,4 +93,33 @@ export default {
           width: 15px
           height: 15px
           margin-right: 5px
+  &__item
+    display: flex
+    padding: 5px 0
+    checkboxWidth = 30px
+    countWidth = 50px
+    &Checkbox
+      border: 2px solid black
+      border-radius: 5px
+      width: checkboxWidth
+      height: checkboxWidth
+      background-color: white
+      cursor: pointer
+    &Content
+      width: "calc(100% - %s)" % checkboxWidth
+      padding-left: 5px
+      display: flex
+    &Count
+      width: countWidth
+      padding-top: 5px
+      .icon
+        margin-right: 4px
+        vertical-align: text-bottom
+      span
+        font-size: 10px
+        vertical-align: text-bottom
+    &Name
+      padding-top: 3px
+      word-wrap: break-word
+      width: "calc(100% - %s)" % countWidth
 </style>
