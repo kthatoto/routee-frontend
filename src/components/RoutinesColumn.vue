@@ -16,8 +16,8 @@
       .routine__headerMenuItem.-hover(@click="mode = 'delete'")
         icon.icon(name="trash-alt")
         span Delete
-  routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type")
   .routine__list
+    routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type" @done="doneCreate")
     .routine__item(v-for="routine in routines")
       .routine__itemCheckbox
       .routine__itemContent
@@ -51,6 +51,10 @@ export default {
   methods: {
     clearMode () {
       this.mode = null
+    },
+    doneCreate () {
+      this.mode = null
+      this.$emit('refetch')
     }
   }
 }
@@ -61,7 +65,6 @@ export default {
   background-color: lightgray
   min-width: 300px
   width: 300px
-  height: 500px
   margin-right: 15px
   padding: 10px
   border-radius: 5px
@@ -93,6 +96,10 @@ export default {
           width: 15px
           height: 15px
           margin-right: 5px
+  &__list
+    overflow-y: scroll
+    height: 450px
+    max-height: 450px
   &__item
     display: flex
     padding: 5px 0

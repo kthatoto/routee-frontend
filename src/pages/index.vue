@@ -5,9 +5,9 @@
     .index__date {{ displayHeaderDate }}
     icon.icon.-hover(name="chevron-right" @click.native="nextDate")
   .index__routines
-    routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines")
-    routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines")
-    routines-column(type="monthly" :dateLabel="displayMonth" :routines="monthlyRoutines")
+    routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines" @refetch="fetchResources")
+    routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines" @refetch="fetchResources")
+    routines-column(type="monthly" :dateLabel="displayMonth" :routines="monthlyRoutines" @refetch="fetchResources")
 </template>
 
 <script>

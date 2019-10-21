@@ -68,7 +68,7 @@ export default {
           date: this.date.getDate()
         }
       ).then((res) => {
-        window.console.log(res)
+        this.$emit('done')
       })
     }
   }
