@@ -19,10 +19,11 @@
   .routine__list
     routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type" @done="doneCreate")
     .routine__item(v-for="routine in routines")
-      .routine__itemCheckbox
+      .routine__itemCheckbox(@click="doCheck(routine)")
+        icon.icon(name="check-square" v-if="routine.achieved")
       .routine__itemContent
         .routine__itemCount
-          template(v-if="routine.target_count")
+          div.-decrement(v-if="routine.target_count" @click="doDecrement(routine)")
             icon.icon(name="check-square")
             span {{ routine.count }}/{{ routine.target_count }}
         .routine__itemName {{ routine.name }}
@@ -55,6 +56,18 @@ export default {
     doneCreate () {
       this.mode = null
       this.$emit('refetch')
+    },
+    async doCheck (routine) {
+      const res = await this.$apiClient('patch', `http://0.0.0.0:3000/routines/${routine.id}/toggle_achieved`)
+      if (res.status === 200) {
+        this.$emit('refetch')
+      }
+    },
+    async doDecrement (routine) {
+      const res = await this.$apiClient('patch', `http://0.0.0.0:3000/routines/${routine.id}/decrement`)
+      if (res.status === 200) {
+        this.$emit('refetch')
+      }
     }
   }
 }
@@ -112,6 +125,13 @@ export default {
       height: checkboxWidth
       background-color: white
       cursor: pointer
+      position: relative
+      .icon
+        width: checkboxWidth
+        height: checkboxWidth
+        position: absolute
+        top: -2px
+        left: -2px
     &Content
       width: "calc(100% - %s)" % checkboxWidth
       padding-left: 5px
@@ -125,6 +145,8 @@ export default {
       span
         font-size: 10px
         vertical-align: text-bottom
+      .-decrement
+        cursor: pointer
     &Name
       padding-top: 3px
       word-wrap: break-word
