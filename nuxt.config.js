@@ -24,6 +24,7 @@ export default {
   ** Global CSS
   */
   css: [
+    '~/styles/element-ui-override.styl'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -31,7 +32,8 @@ export default {
   plugins: [
     '~plugins/vue-awesome.js',
     '~plugins/apiClient.js',
-    '~plugins/element-ui.js'
+    '~plugins/element-ui.js',
+    '~plugins/dayjs.js'
   ],
   /*
   ** Nuxt.js dev-modules
