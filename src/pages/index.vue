@@ -1,14 +1,14 @@
 <template lang="pug">
 .index
   .index__datepicker
-    el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="")
+    el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="prevDate")
     el-date-picker.elo.-child-cr(
       v-model="localDate"
       @change="changeDate"
       :editable="false"
       :clearable="false"
       format="yyyy/MM/dd")
-    el-button.elo.-left-cr.-left-bn(icon="el-icon-arrow-right")
+    el-button.elo.-left-cr.-left-bn(icon="el-icon-arrow-right" @click="nextDate")
   .index__routines
     routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines" @refetch="fetchResources")
     routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines" @refetch="fetchResources")
@@ -78,21 +78,12 @@ export default {
       this.$store.commit('changeDate', date)
     },
     prevDate () {
-      this.$dayjs()
-      const prevDate = new Date(
-        this.localDate.getFullYear(),
-        this.localDate.getMonth(),
-        this.localDate.getDate() - 1
-      )
+      const prevDate = this.$dayjs(this.localDate).subtract(1, 'day').toDate()
       this.localDate = prevDate
       this.changeDate(prevDate)
     },
     nextDate () {
-      const nextDate = new Date(
-        this.localDate.getFullYear(),
-        this.localDate.getMonth(),
-        this.localDate.getDate() + 1
-      )
+      const nextDate = this.$dayjs(this.localDate).add(1, 'day').toDate()
       this.localDate = nextDate
       this.changeDate(nextDate)
     }
