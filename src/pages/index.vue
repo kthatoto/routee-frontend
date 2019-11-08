@@ -1,9 +1,14 @@
 <template lang="pug">
 .index
   .index__datepicker
-    icon.icon.-hover(name="chevron-left" @click.native="prevDate")
-    .index__date {{ displayHeaderDate }}
-    icon.icon.-hover(name="chevron-right" @click.native="nextDate")
+    el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="")
+    el-date-picker.elo.-child-cr(
+      v-model="localDate"
+      @change="changeDate"
+      :editable="false"
+      :clearable="false"
+      format="yyyy/MM/dd")
+    el-button.elo.-left-cr.-left-bn(icon="el-icon-arrow-right")
   .index__routines
     routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines" @refetch="fetchResources")
     routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines" @refetch="fetchResources")
@@ -17,6 +22,7 @@ export default {
   components: { RoutinesColumn },
   data () {
     return {
+      localDate: new Date(),
       dailyRoutines: [],
       weeklyRoutines: [],
       monthlyRoutines: []
@@ -61,20 +67,34 @@ export default {
     }
   },
   methods: {
-    prevDate () {
-      const prevDate = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - 1)
-      this.$store.commit('changeDate', prevDate)
-    },
-    nextDate () {
-      const nextDate = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + 1)
-      this.$store.commit('changeDate', nextDate)
-    },
     async fetchResources () {
       const dateQuery = `year=${this.date.getFullYear()}&month=${this.date.getMonth() + 1}&date=${this.date.getDate()}`
       const res = await this.$apiClient('get', `http://0.0.0.0:3000/home?${dateQuery}`).catch((err) => { return err.response })
       this.dailyRoutines = res.data.daily_routines
       this.weeklyRoutines = res.data.weekly_routines
       this.monthlyRoutines = res.data.monthly_routines
+    },
+    changeDate (date) {
+      this.$store.commit('changeDate', date)
+    },
+    prevDate () {
+      this.$dayjs()
+      const prevDate = new Date(
+        this.localDate.getFullYear(),
+        this.localDate.getMonth(),
+        this.localDate.getDate() - 1
+      )
+      this.localDate = prevDate
+      this.changeDate(prevDate)
+    },
+    nextDate () {
+      const nextDate = new Date(
+        this.localDate.getFullYear(),
+        this.localDate.getMonth(),
+        this.localDate.getDate() + 1
+      )
+      this.localDate = nextDate
+      this.changeDate(nextDate)
     }
   }
 }
@@ -84,17 +104,9 @@ export default {
 .index
   padding: 50px
   &__datepicker
-    display: flex
-    justify-content: space-between
-    background-color: lightgray
-    border-radius: 8px
-    width: 250px
-    vertical-align: middle
     margin-bottom: 20px
-    .icon
-      padding: 3px 0
-      width: 30px
-      height: 30px
+    >>> input
+      cursor: pointer
   &__date
     height: 30px
     line-height: 30px
