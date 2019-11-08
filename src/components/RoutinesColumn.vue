@@ -36,7 +36,7 @@ export default {
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
     dateLabel: { type: String, required: true },
-    routines: { type: Array, required: false }
+    routines: { type: Array, default: () => [] }
   },
   data () {
     return {
