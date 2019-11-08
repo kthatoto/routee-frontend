@@ -30,7 +30,8 @@ export default {
   */
   plugins: [
     '~plugins/vue-awesome.js',
-    '~plugins/apiClient.js'
+    '~plugins/apiClient.js',
+    '~plugins/element-ui.js'
   ],
   /*
   ** Nuxt.js dev-modules
