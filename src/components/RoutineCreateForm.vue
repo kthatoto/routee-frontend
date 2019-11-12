@@ -1,6 +1,5 @@
 <template lang="pug">
-.create
-  .create__checkbox
+el-card.create
   .create__form
     .create__formTop
       .create__count
@@ -77,19 +76,7 @@ export default {
 
 <style lang="stylus" scoped>
 .create
-  display: flex
-  padding: 5px 0
-  &__checkbox
-    border: 2px solid black
-    border-radius: 5px
-    width: 30px
-    height: 30px
-    background-color: white
-    cursor: pointer
-    margin-top: 15px
   &__form
-    width: calc(100% - 30px)
-    padding-left: 15px
     &Top
       display: flex
       margin-bottom: 5px

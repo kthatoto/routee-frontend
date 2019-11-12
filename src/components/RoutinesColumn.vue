@@ -17,17 +17,19 @@ el-card.routine(@click="showingMenu = false")
           el-dropdown-item.routine__headerDropdownItem(command="delete")
             icon.icon(name="trash-alt")
             span Delete
-  .routine__list
-    routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type" @done="doneCreate")
-    .routine__item(v-for="routine in routines")
-      .routine__itemCheckbox(@click="doCheck(routine)")
-        icon.icon(name="check-square" v-if="routine.achieved")
-      .routine__itemContent
-        .routine__itemCount
-          div.-decrement(v-if="routine.target_count" @click="doDecrement(routine)")
-            icon.icon(name="check-square")
-            span {{ routine.count }}/{{ routine.target_count }}
-        .routine__itemName {{ routine.name }}
+  .routine__body
+    .routine__createForm(v-if="mode === 'create'")
+      routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
+    .routine__list
+      .routine__item(v-for="routine in routines")
+        .routine__itemCheckbox(@click="doCheck(routine)")
+          icon.icon(name="check-square" v-if="routine.achieved")
+        .routine__itemContent
+          .routine__itemCount
+            div.-decrement(v-if="routine.target_count" @click="doDecrement(routine)")
+              icon.icon(name="check-square")
+              span {{ routine.count }}/{{ routine.target_count }}
+          .routine__itemName {{ routine.name }}
 </template>
 
 <script>
@@ -105,10 +107,26 @@ export default {
           height: 15px
           margin-right: 5px
           vertical-align: text-bottom
+  &__body
+    height: 400px
+  &__createForm
+    margin-bottom: 10px
   &__list
     overflow-y: scroll
-    height: 450px
-    max-height: 450px
+    background:
+      linear-gradient(white 30%, rgba(255, 255, 255, 0)),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+      radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
+      radial-gradient(50% 100%,farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%
+    background:
+      linear-gradient(white 30%, rgba(255, 255, 255, 0)),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+      radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%
+    background-repeat: no-repeat
+    background-color: white
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px
+    background-attachment: local, local, scroll, scroll
   &__item
     display: flex
     padding: 5px 0
