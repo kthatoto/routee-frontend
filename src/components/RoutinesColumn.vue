@@ -1,21 +1,22 @@
 <template lang="pug">
-.routine(@click="showingMenu = false")
-  .routine__header
+el-card.routine(@click="showingMenu = false")
+  .routine__header(slot="header")
     div {{ dateLabel }}
     h2
       span {{ title }}
-      span(@click.stop)
-        icon.icon.-hover(name="ellipsis-v" @click.native="showingMenu = !showingMenu")
-    .routine__headerMenu(v-show="showingMenu")
-      .routine__headerMenuItem.-hover(@click="mode = 'create'")
-        icon.icon(name="plus")
-        span Create
-      .routine__headerMenuItem.-hover(@click="mode = 'edit'")
-        icon.icon(name="edit")
-        span Edit
-      .routine__headerMenuItem.-hover(@click="mode = 'delete'")
-        icon.icon(name="trash-alt")
-        span Delete
+      el-dropdown.routine__headerDropdown(trigger="click" @command="handleDropdownCommand")
+        span
+          icon.icon.-hover(name="ellipsis-v")
+        el-dropdown-menu(slot="dropdown")
+          el-dropdown-item.routine__headerDropdownItem(command="create")
+            icon.icon(name="plus")
+            span Create
+          el-dropdown-item.routine__headerDropdownItem(command="edit")
+            icon.icon(name="edit")
+            span Edit
+          el-dropdown-item.routine__headerDropdownItem(command="delete")
+            icon.icon(name="trash-alt")
+            span Delete
   .routine__list
     routine-create-form(v-if="mode === 'create'" @cancel="clearMode" :type="type" @done="doneCreate")
     .routine__item(v-for="routine in routines")
@@ -50,6 +51,9 @@ export default {
     }
   },
   methods: {
+    handleDropdownCommand (command) {
+      this.mode = command
+    },
     clearMode () {
       this.mode = null
     },
@@ -75,17 +79,12 @@ export default {
 
 <style lang="stylus" scoped>
 .routine
-  background-color: lightgray
-  min-width: 300px
-  width: 300px
+  background-color: #fff
+  min-width: 400px
+  width: 400px
   margin-right: 15px
-  padding: 10px
-  border-radius: 5px
   &__header
     position: relative
-    padding-bottom: 5px
-    border-bottom: 1px solid gray
-    margin-bottom: 10px
     h2
       display: flex
       justify-content: space-between
@@ -93,22 +92,19 @@ export default {
       .icon
         width: 20px
         height: 20px
-    &Menu
+    &Dropdown
       position: absolute
-      top: 100%
+      top: 33px
       right: -10px
-      background-color: gray
       &Item
-        width: 100px
-        color: white
-        margin: 0 5px
-        padding: 5px 2px
+        width: 150px
         &:not(:last-child)
           border-bottom: 1px solid white
         .icon
           width: 15px
           height: 15px
           margin-right: 5px
+          vertical-align: text-bottom
   &__list
     overflow-y: scroll
     height: 450px

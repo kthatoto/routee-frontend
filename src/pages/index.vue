@@ -1,14 +1,14 @@
 <template lang="pug">
 .index
   .index__datepicker
-    el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="prevDate")
+    el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="prevDate" type="primary" plain)
     el-date-picker.elo.-child-cr(
       v-model="localDate"
       @change="changeDate"
       :editable="false"
       :clearable="false"
       format="yyyy/MM/dd")
-    el-button.elo.-left-cr.-left-bn(icon="el-icon-arrow-right" @click="nextDate")
+    el-button.elo.-left-cr.-left-bn(icon="el-icon-arrow-right" @click="nextDate" type="primary" plain)
   .index__routines
     routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines" @refetch="fetchResources")
     routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines" @refetch="fetchResources")
