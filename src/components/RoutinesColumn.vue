@@ -22,7 +22,7 @@ el-card.routine(@click="showingMenu = false")
       .routine__createForm(v-if="mode === 'create'")
         routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
-      transition-group(name="el-fade-in")
+      zoom-center-transition(group)
         .routine__item(v-for="routine in routines" :key="routine.id")
           .routine__itemCheckbox(@click="doCheck(routine)")
             icon.icon(name="check-square" v-if="routine.achieved")
@@ -35,9 +35,10 @@ el-card.routine(@click="showingMenu = false")
 </template>
 
 <script>
+import { ZoomCenterTransition } from 'vue2-transitions'
 import RoutineCreateForm from '~/components/RoutineCreateForm'
 export default {
-  components: { RoutineCreateForm },
+  components: { RoutineCreateForm, ZoomCenterTransition },
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
     dateLabel: { type: String, required: true },
