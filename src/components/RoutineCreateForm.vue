@@ -4,7 +4,7 @@ el-card.create
     el-form-item(label="count")
       el-switch.create__countSwitch(v-model="form.countActive")
       el-input-number(v-model="form.count" :disabled="!form.countActive" size="mini" :min="1")
-    el-form-item(label="name" prop="name")
+    el-form-item(label="name" prop="name" :error="errors.name")
       el-input(v-model="form.name")
     el-form-item(label="description")
       el-input(type="textarea" v-model="form.description")
@@ -35,6 +35,9 @@ export default {
         name: [
           { required: true, message: 'Name is required' }
         ]
+      },
+      errors: {
+        name: null
       }
     }
   },
@@ -57,7 +60,8 @@ export default {
     async submit () {
       const valid = await this.$refs.form.validate()
       if (!valid) { return }
-      const res = await this.$apiClient('post',
+      this.errors.name = null
+      this.$apiClient('post',
         'http://0.0.0.0:3000/routines',
         {
           interval_type: this.type,
@@ -68,9 +72,15 @@ export default {
           month: this.date.getMonth() + 1,
           date: this.date.getDate()
         }
-      )
-      console.log(res)
-      this.$emit('done')
+      ).then(() => {
+        this.$emit('done')
+      }).catch((err) => {
+        if (err.response.status === 409) {
+          this.errors.name = 'The name is already used'
+        } else {
+          alert('Something error')
+        }
+      })
     }
   }
 }
