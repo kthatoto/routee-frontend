@@ -57,10 +57,13 @@ export default {
     cancel () {
       this.$emit('cancel')
     },
+    clearErrors () {
+      this.errors.name = null
+    },
     async submit () {
       const valid = await this.$refs.form.validate()
       if (!valid) { return }
-      this.errors.name = null
+      this.clearErrors()
       this.$apiClient('post',
         'http://0.0.0.0:3000/routines',
         {
