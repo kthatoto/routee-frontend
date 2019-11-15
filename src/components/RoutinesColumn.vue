@@ -18,8 +18,9 @@ el-card.routine(@click="showingMenu = false")
             icon.icon(name="trash-alt")
             span Delete
   .routine__body
-    .routine__createForm(v-if="mode === 'create'")
-      routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
+    el-collapse-transition
+      .routine__createForm(v-if="mode === 'create'")
+        routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
       .routine__item(v-for="routine in routines")
         .routine__itemCheckbox(@click="doCheck(routine)")
