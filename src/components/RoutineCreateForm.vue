@@ -1,6 +1,6 @@
 <template lang="pug">
 el-card.create
-  el-form.create__form(label-width="90px" :model="form" ref="form" :rules="rules")
+  el-form.create__form(label-width="85px" :model="form" ref="form" :rules="rules")
     el-form-item(label="count")
       el-switch.create__countSwitch(v-model="form.countActive")
       el-input-number(v-model="form.count" :disabled="!form.countActive" size="mini" :min="1")

@@ -18,7 +18,7 @@ el-card.routine(@click="showingMenu = false")
             icon.icon(name="trash-alt")
             span Delete
   .routine__body
-    el-collapse-transition
+    collapse-transition
       .routine__createForm(v-if="mode === 'create'")
         routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
@@ -35,10 +35,10 @@ el-card.routine(@click="showingMenu = false")
 </template>
 
 <script>
-import { ZoomCenterTransition } from 'vue2-transitions'
+import { ZoomCenterTransition, CollapseTransition } from 'vue2-transitions'
 import RoutineCreateForm from '~/components/RoutineCreateForm'
 export default {
-  components: { RoutineCreateForm, ZoomCenterTransition },
+  components: { RoutineCreateForm, ZoomCenterTransition, CollapseTransition },
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
     dateLabel: { type: String, required: true },
@@ -84,9 +84,10 @@ export default {
 
 <style lang="stylus" scoped>
 .routine
+  routineWidth = 350px
   background-color: #fff
-  min-width: 400px
-  width: 400px
+  min-width: routineWidth
+  width: routineWidth
   margin-right: 15px
   &__header
     position: relative
