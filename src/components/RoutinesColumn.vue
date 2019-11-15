@@ -22,15 +22,16 @@ el-card.routine(@click="showingMenu = false")
       .routine__createForm(v-if="mode === 'create'")
         routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
-      .routine__item(v-for="routine in routines")
-        .routine__itemCheckbox(@click="doCheck(routine)")
-          icon.icon(name="check-square" v-if="routine.achieved")
-        .routine__itemContent
-          .routine__itemCount
-            div.-decrement(v-if="routine.target_count" @click="doDecrement(routine)")
-              icon.icon(name="check-square")
-              span {{ routine.count }}/{{ routine.target_count }}
-          .routine__itemName {{ routine.name }}
+      transition-group(name="el-fade-in")
+        .routine__item(v-for="routine in routines" :key="routine.id")
+          .routine__itemCheckbox(@click="doCheck(routine)")
+            icon.icon(name="check-square" v-if="routine.achieved")
+          .routine__itemContent
+            .routine__itemCount
+              div.-decrement(v-if="routine.target_count" @click="doDecrement(routine)")
+                icon.icon(name="check-square")
+                span {{ routine.count }}/{{ routine.target_count }}
+            .routine__itemName {{ routine.name }}
 </template>
 
 <script>
