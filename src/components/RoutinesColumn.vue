@@ -110,6 +110,8 @@ export default {
           vertical-align: text-bottom
   &__body
     height: 400px
+    display: flex
+    flex-direction: column
   &__createForm
     margin-bottom: 10px
   &__list
