@@ -22,8 +22,10 @@ el-card.routine(@click="showingMenu = false")
       .routine__createForm(v-if="mode === 'create'")
         routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
-      zoom-center-transition(group)
-        .routine__item(v-for="routine in routines" :key="routine.id")
+      transition-group(name="routineList"
+        @before-enter="el => addDealy(el, 'enter')" @before-leave="el => addDealy(el, 'leave')"
+        @after-enter="clearDelay" @enter-cancelled="clearDelay")
+        .routine__item(v-for="(routine, i) in routines" :key="routine.id" :data-index="i")
           .routine__itemCheckbox(@click="doCheck(routine)")
             icon.icon(name="check-square" v-if="routine.achieved")
           .routine__itemContent
@@ -47,7 +49,8 @@ export default {
   data () {
     return {
       showingMenu: false,
-      mode: null // 'create' | 'edit' | 'delete'
+      mode: null, // 'create' | 'edit' | 'delete'
+      animateDirection: null // 'left' | 'right'
     }
   },
   computed: {
@@ -77,6 +80,16 @@ export default {
       if (res.status === 200) {
         this.$emit('refetch')
       }
+    },
+    addDealy (el, type) {
+      if (type === 'leave') {
+        el.style.transitionDelay = 30 * parseInt(el.dataset.index) + 'ms'
+      } else if (type === 'enter') {
+        el.style.transitionDelay = 700 + 30 * parseInt(el.dataset.index) + 'ms'
+      }
+    },
+    clearDelay (el) {
+      el.style.transitionDelay = ''
     }
   }
 }
@@ -171,4 +184,16 @@ export default {
       padding-top: 3px
       word-wrap: break-word
       width: "calc(100% - %s)" % countWidth
+  .routineList
+    &-enter-active, &-leave-active
+      transition-property: all
+      transition-duration: 500ms
+    &-leave
+      transform: translateX(0)
+    &-leave-to
+      transform: translateX(-400px)
+    &-enter
+      transform: translateX(400px)
+    &-enter-to
+      transform: translateX(0)
 </style>
