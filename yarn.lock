@@ -8293,6 +8293,13 @@ vue-server-renderer@^2.6.10:
     serialize-javascript "^1.3.0"
     source-map "0.5.6"
 
+vue-simple-calendar@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/vue-simple-calendar/-/vue-simple-calendar-4.2.2.tgz#637f592f5598f917476f43f5aab49cee02b90fd9"
+  integrity sha512-ohpoWk5xkU9X31d2Uq1YLOZ2R6WWXrmFpp7fiJADG11h4flww9m+5+rhGbQTtQJjhapvjqSVjZU1xTsqx1aOpA==
+  dependencies:
+    vue "^2.6.10"
+
 vue-style-loader@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
