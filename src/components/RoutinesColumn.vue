@@ -1,7 +1,7 @@
 <template lang="pug">
 el-card.routine(@click="showingMenu = false")
   .routine__header(slot="header")
-    div {{ dateLabel }}
+    h2.routine__dateLabel {{ dateLabel }}
     h2
       span {{ title }}
       el-dropdown.routine__headerDropdown(trigger="click" @command="handleDropdownCommand")
@@ -111,7 +111,7 @@ export default {
 
 <style lang="stylus" scoped>
 .routine
-  routineWidth = 350px
+  routineWidth = 320px
   background-color: #fff
   min-width: routineWidth
   width: routineWidth
@@ -138,6 +138,8 @@ export default {
           height: 15px
           margin-right: 5px
           vertical-align: text-bottom
+  &__dateLabel
+    font-size: 16px
   &__body
     height: 400px
     display: flex

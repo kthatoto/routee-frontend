@@ -10,8 +10,6 @@ div
   box-sizing: border-box
   list-style: none
   text-decoration: none
-.root
-  background-color: #eee
 .-hover:hover
   opacity: 0.8
   cursor: pointer

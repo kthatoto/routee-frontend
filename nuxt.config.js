@@ -25,7 +25,8 @@ export default {
   */
   css: [
     '~/styles/element-ui-override.styl',
-    '~/styles/common.styl'
+    '~/styles/common.styl',
+    '~/styles/variables.styl'
   ],
   /*
   ** Plugins to load before mounting the App
