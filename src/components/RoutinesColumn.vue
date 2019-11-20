@@ -32,7 +32,6 @@ el-card.routine(@click="showingMenu = false")
           .routine__itemContent
             .routine__itemCount
               div.-decrement(v-if="routine.target_count" @click="doDecrement(routine)")
-                icon.icon(name="check-square")
                 span {{ routine.count }}/{{ routine.target_count }}
             .routine__itemName {{ routine.name }}
 </template>
@@ -111,7 +110,7 @@ export default {
 
 <style lang="stylus" scoped>
 .routine
-  routineWidth = 320px
+  routineWidth = 280px
   background-color: #fff
   min-width: routineWidth
   width: routineWidth
@@ -138,8 +137,6 @@ export default {
           height: 15px
           margin-right: 5px
           vertical-align: text-bottom
-  &__dateLabel
-    font-size: 16px
   &__body
     height: 400px
     display: flex
@@ -166,8 +163,8 @@ export default {
   &__item
     display: flex
     padding: 5px 0
-    checkboxWidth = 30px
-    countWidth = 50px
+    checkboxWidth = 20px
+    countWidth = 40px
     &Checkbox
       border: 2px solid black
       border-radius: 5px
@@ -198,7 +195,6 @@ export default {
       .-decrement
         cursor: pointer
     &Name
-      padding-top: 3px
       word-wrap: break-word
       width: "calc(100% - %s)" % countWidth
   .routineList

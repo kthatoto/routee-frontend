@@ -1,6 +1,8 @@
 <template lang="pug">
 el-container.index
-  el-aside.index__aside(width="400px")
+  el-aside.index__aside(width="530px")
+    el-card.index__calendarWrapper
+      el-calendar.index__calendar(v-model="localDate" :first-day-of-week="7")
   el-container
     el-header.index__header
     el-main.index__main
@@ -8,7 +10,6 @@ el-container.index
         el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="prevDate" type="primary" plain)
         el-date-picker.elo.-child-cr(
           v-model="localDate"
-          @change="changeDate"
           :editable="false"
           :clearable="false"
           format="yyyy/MM/dd")
@@ -63,6 +64,9 @@ export default {
     date (newDate, oldDate) {
       this.fetchResources()
       this.dateChangeDirection = (newDate > oldDate) ? 'next' : 'prev'
+    },
+    localDate () {
+      this.$store.commit('changeDate', this.localDate)
     }
   },
   async asyncData ({ app, error }) {
@@ -83,18 +87,13 @@ export default {
       this.weeklyRoutines = res.data.weekly_routines
       this.monthlyRoutines = res.data.monthly_routines
     },
-    changeDate (date) {
-      this.$store.commit('changeDate', date)
-    },
     prevDate () {
       const prevDate = this.$dayjs(this.localDate).subtract(1, 'day').toDate()
       this.localDate = prevDate
-      this.changeDate(prevDate)
     },
     nextDate () {
       const nextDate = this.$dayjs(this.localDate).add(1, 'day').toDate()
       this.localDate = nextDate
-      this.changeDate(nextDate)
     }
   }
 }
@@ -107,6 +106,7 @@ export default {
   &__aside
     border-right: 1px solid #eee
     background-color: var(--routeeColorSecondary)
+    padding: 10px
   &__header
     border-bottom: 1px solid #eee
     background-color: var(--routeeColorThirdry)
