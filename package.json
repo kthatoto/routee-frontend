@@ -21,6 +21,7 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "vue-awesome": "^3.5.4",
+    "vue-simple-calendar": "^4.2.2",
     "vue2-transitions": "^0.3.0"
   },
   "devDependencies": {
