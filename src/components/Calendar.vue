@@ -2,6 +2,7 @@
 calendar-view.calendar(:showDate="date" :events="events")
   div(slot="dayContent" slot-scope="{ day }")
     h1 {{ day.getDate() }}
+    h1(v-if="today(day)") Today!!
 </template>
 
 <script>
@@ -20,6 +21,11 @@ export default {
     ...mapGetters({
       date: 'getDate'
     })
+  },
+  methods: {
+    today (date) {
+      return this.$dayjs(this.date).isSame(this.$dayjs(date), 'date')
+    }
   }
 }
 </script>
