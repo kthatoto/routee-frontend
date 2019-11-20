@@ -1,8 +1,7 @@
 <template lang="pug">
 el-container.index
   el-aside.index__aside(width="530px")
-    el-card.index__calendarWrapper
-      el-calendar.index__calendar(v-model="localDate" :first-day-of-week="7")
+    Calendar
   el-container
     el-header.index__header
     el-main.index__main
@@ -26,8 +25,9 @@ el-container.index
 <script>
 import { mapGetters } from 'vuex'
 import RoutinesColumn from '~/components/RoutinesColumn'
+import Calendar from '~/components/Calendar'
 export default {
-  components: { RoutinesColumn },
+  components: { RoutinesColumn, Calendar },
   data () {
     return {
       localDate: new Date(),
@@ -45,7 +45,7 @@ export default {
       return new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - this.date.getDay())
     },
     endOfWeekDate () {
-      return new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + (7 - this.date.getDay()))
+      return new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + (6 - this.date.getDay()))
     },
     displayDate () {
       return `${this.date.getMonth() + 1}/${this.date.getDate()}`
@@ -62,11 +62,16 @@ export default {
   },
   watch: {
     date (newDate, oldDate) {
-      this.fetchResources()
-      this.dateChangeDirection = (newDate > oldDate) ? 'next' : 'prev'
+      if (this.localDate !== this.date) {
+        this.fetchResources()
+        this.dateChangeDirection = (newDate > oldDate) ? 'next' : 'prev'
+        this.localDate = this.date
+      }
     },
     localDate () {
-      this.$store.commit('changeDate', this.localDate)
+      if (this.localDate !== this.date) {
+        this.$store.commit('changeDate', this.localDate)
+      }
     }
   },
   async asyncData ({ app, error }) {
