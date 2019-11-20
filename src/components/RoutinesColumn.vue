@@ -23,9 +23,10 @@ el-card.routine(@click="showingMenu = false")
         routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
       transition-group(name="routineList"
-        @before-enter="el => addDealy(el, 'enter')" @before-leave="el => addDealy(el, 'leave')"
+        @before-enter="el => addDelay(el, 'enter')" @before-leave="el => addDelay(el, 'leave')"
         @after-enter="clearDelay" @enter-cancelled="clearDelay")
-        .routine__item(v-for="(routine, i) in routines" :key="routine.id" :data-index="i")
+        .routine__item(v-for="(routine, i) in routines" :key="routine.id" :data-index="i"
+          :class="directionClass")
           .routine__itemCheckbox(@click="doCheck(routine)")
             icon.icon(name="check-square" v-if="routine.achieved")
           .routine__itemContent
@@ -44,18 +45,26 @@ export default {
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
     dateLabel: { type: String, required: true },
-    routines: { type: Array, default: () => [] }
+    routines: { type: Array, default: () => [] },
+    dateChangeDirection: { type: String, default: () => null } // 'prev' | 'next'
   },
   data () {
     return {
       showingMenu: false,
       mode: null, // 'create' | 'edit' | 'delete'
-      animateDirection: null // 'left' | 'right'
+      animateDirection: null, // 'left' | 'right'
+      transition: {
+        styleTopStore: 0 // for leave transition
+      }
     }
   },
   computed: {
     title () {
       return this.type.charAt(0).toUpperCase() + this.type.slice(1) + ' Routines'
+    },
+    directionClass () {
+      const classes = { prev: '-prev', next: '-next' }
+      return classes[this.dateChangeDirection]
     }
   },
   methods: {
@@ -81,15 +90,20 @@ export default {
         this.$emit('refetch')
       }
     },
-    addDealy (el, type) {
+    addDelay (el, type) {
+      const offset = 0
       if (type === 'leave') {
-        el.style.transitionDelay = 30 * parseInt(el.dataset.index) + 'ms'
+        const index = parseInt(el.dataset.index)
+        el.style.transitionDelay = 30 * index + 'ms'
+        el.style.top = this.transition.styleTopStore + 'px'
+        this.transition.styleTopStore += el.clientHeight
       } else if (type === 'enter') {
-        el.style.transitionDelay = 700 + 30 * parseInt(el.dataset.index) + 'ms'
+        el.style.transitionDelay = offset + 30 * parseInt(el.dataset.index) + 'ms'
       }
     },
     clearDelay (el) {
       el.style.transitionDelay = ''
+      this.transition.styleTopStore = 0
     }
   }
 }
@@ -131,6 +145,7 @@ export default {
   &__createForm
     margin-bottom: 10px
   &__list
+    position: relative
     overflow-y: scroll
     background:
       linear-gradient(white 30%, rgba(255, 255, 255, 0)),
@@ -185,15 +200,20 @@ export default {
       word-wrap: break-word
       width: "calc(100% - %s)" % countWidth
   .routineList
+    translateX = 400px
     &-enter-active, &-leave-active
       transition-property: all
       transition-duration: 500ms
-    &-leave
-      transform: translateX(0)
+    &-leave-active
+      position: absolute
     &-leave-to
-      transform: translateX(-400px)
+      &.-next
+        transform: translateX(- translateX)
+      &.-prev
+        transform: translateX(translateX)
     &-enter
-      transform: translateX(400px)
-    &-enter-to
-      transform: translateX(0)
+      &.-next
+        transform: translateX(translateX)
+      &.-prev
+        transform: translateX(- translateX)
 </style>

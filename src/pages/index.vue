@@ -10,9 +10,12 @@
       format="yyyy/MM/dd")
     el-button.elo.-left-cr.-left-bn(icon="el-icon-arrow-right" @click="nextDate" type="primary" plain)
   .index__routines
-    routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines" @refetch="fetchResources")
-    routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines" @refetch="fetchResources")
-    routines-column(type="monthly" :dateLabel="displayMonth" :routines="monthlyRoutines" @refetch="fetchResources")
+    routines-column(type="daily" :dateLabel="displayDate" :routines="dailyRoutines"
+      :dateChangeDirection="dateChangeDirection" @refetch="fetchResources")
+    routines-column(type="weekly" :dateLabel="displayWeek" :routines="weeklyRoutines"
+      :dateChangeDirection="dateChangeDirection" @refetch="fetchResources")
+    routines-column(type="monthly" :dateLabel="displayMonth" :routines="monthlyRoutines"
+      :dateChangeDirection="dateChangeDirection" @refetch="fetchResources")
 </template>
 
 <script>
@@ -25,7 +28,8 @@ export default {
       localDate: new Date(),
       dailyRoutines: [],
       weeklyRoutines: [],
-      monthlyRoutines: []
+      monthlyRoutines: [],
+      dateChangeDirection: null // 'prev' | 'next'
     }
   },
   computed: {
@@ -52,8 +56,9 @@ export default {
     })
   },
   watch: {
-    date () {
+    date (newDate, oldDate) {
       this.fetchResources()
+      this.dateChangeDirection = (newDate > oldDate) ? 'next' : 'prev'
     }
   },
   async asyncData ({ app, error }) {
