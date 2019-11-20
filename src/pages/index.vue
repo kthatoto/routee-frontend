@@ -115,9 +115,9 @@ export default {
   &__header
     border-bottom: 1px solid #eee
     background-color: var(--routeeColorThirdry)
-  &__main
   &__datepicker
     margin-bottom: 20px
+    width: 350px
     >>> input
       cursor: pointer
   &__date
