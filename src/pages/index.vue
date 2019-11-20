@@ -62,16 +62,14 @@ export default {
   },
   watch: {
     date (newDate, oldDate) {
+      this.fetchResources()
+      this.dateChangeDirection = (newDate > oldDate) ? 'next' : 'prev'
       if (this.localDate !== this.date) {
-        this.fetchResources()
-        this.dateChangeDirection = (newDate > oldDate) ? 'next' : 'prev'
         this.localDate = this.date
       }
     },
     localDate () {
-      if (this.localDate !== this.date) {
-        this.$store.commit('changeDate', this.localDate)
-      }
+      this.$store.commit('changeDate', this.localDate)
     }
   },
   async asyncData ({ app, error }) {

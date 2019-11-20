@@ -1,14 +1,14 @@
 <template lang="pug">
-calendar-view.calendar(:events="events")
-  calendar-view-day-content(slot="dayContent" slot-scope="{ day }")
+calendar-view.calendar(:showDate="date" :events="events")
+  div(slot="dayContent" slot-scope="{ day }")
     h1 {{ day.getDate() }}
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { CalendarView, CalendarViewDayContent } from 'vue-simple-calendar'
+import { CalendarView } from 'vue-simple-calendar'
 export default {
-  components: { CalendarView, CalendarViewDayContent },
+  components: { CalendarView },
   data () {
     return {
       events: [
