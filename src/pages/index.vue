@@ -109,7 +109,7 @@ export default {
   &__aside
     border-right: 1px solid #eee
     background-color: var(--routeeColorSecondary)
-    padding: 10px
+    padding: 40px 10px 0
   &__header
     border-bottom: 1px solid #eee
     background-color: var(--routeeColorThirdry)
