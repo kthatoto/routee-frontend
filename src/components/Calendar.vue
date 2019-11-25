@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     isToday (date) {
-      console.log(date)
       return this.$dayjs(this.date).isSame(this.$dayjs(date), 'date')
     },
     setShowDate (date) {
