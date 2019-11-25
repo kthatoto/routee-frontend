@@ -1,11 +1,13 @@
 <template lang="pug">
 .calendar
-  calendar-view(:showDate="showDate" :events="events"
+  calendar-view(:showDate="showDate" :events="computedEvents"
     @click-date="onClickDate" current-period-label="Today")
     calendar-view-header.calendar__header(slot="header" slot-scope="{ headerProps }"
       @input="setShowDate" :header-props="headerProps")
     .calendar__dayContent(slot="dayContent" slot-scope="{ day }" :class="{'-today': isToday(day)}")
       .dayContent__day {{ day.getDate() }}
+    .calendar__event.cv-event(slot="event" slot-scope="{ event, top }" :class="event.classes" :style="{ top }")
+      span
 </template>
 
 <script>
@@ -16,12 +18,42 @@ export default {
   data () {
     return {
       showDate: null,
-      events: [
-        { startDate: new Date(2019, 10, 3), title: 'heyaaaaaa!' }
-      ]
+      events: []
     }
   },
   computed: {
+    showingDateStartOfMonth () {
+      return this.$dayjs(this.showDate).startOf('month').startOf('week')
+    },
+    showingDateEndOfMonth () {
+      return this.$dayjs(this.showDate).endOf('month').endOf('week')
+    },
+    showingDateCount () {
+      return this.showingDateEndOfMonth.diff(this.showingDateStartOfMonth, 'day') + 1
+    },
+    computedEvents () {
+      let date = this.showingDateStartOfMonth
+      return [...Array(this.showingDateCount)].map((_) => {
+        const status = Math.random() < 0.8 ? 'done' : 'imcomplete'
+        const event = {
+          startDate: date,
+          title: ' ',
+          classes: `-${status}`
+        }
+        date = date.add(1, 'day')
+        return event
+      }).concat({
+        startDate: new Date(2019, 10, 1),
+        endDate: new Date(2019, 10, 6),
+        classes: '-done',
+        title: ' '
+      }).concat({
+        startDate: new Date(2019, 10, 10),
+        endDate: new Date(2019, 10, 16),
+        classes: '-imcomplete',
+        title: ' '
+      })
+    },
     ...mapGetters({
       date: 'getDate'
     })
@@ -112,6 +144,7 @@ export default {
   .cv-week
     height: 100px
     flex-basis: unset
+    overflow: hidden
   .cv-day
     &.outsideOfMonth
       color: #c0c4cc
@@ -119,4 +152,11 @@ export default {
       color: var(--routeeColorPrimary)
   .cv-day-number
     display: none
+  .cv-event
+    border: none
+    height: 10px
+    &.-done
+      background-color: var(--routeeColorSuccess)
+    &.-imcomplete
+      background-color: lightgray
 </style>
