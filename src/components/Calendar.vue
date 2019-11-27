@@ -6,7 +6,7 @@
       @input="setShowDate" :header-props="headerProps")
     .calendar__dayContent(slot="dayContent" slot-scope="{ day }" :class="{'-today': isToday(day)}")
       .dayContent__day {{ day.getDate() }}
-    .calendar__event.cv-event(slot="event" slot-scope="{ event, top }" :class="event.classes" :style="{ top }")
+    .calendar__event.cv-event(slot="event" slot-scope="{ event }" :class="eventClasses(event)")
       span
 </template>
 
@@ -22,6 +22,15 @@ export default {
     }
   },
   computed: {
+    showingYear () {
+      return this.$dayjs(this.showDate).year()
+    },
+    showingMonth () {
+      return this.$dayjs(this.showDate).month() + 1
+    },
+    showingYearMonth () {
+      return `${this.showingYear}-${this.showingMonth}`
+    },
     showingDateStartOfMonth () {
       return this.$dayjs(this.showDate).startOf('month').startOf('week')
     },
@@ -36,7 +45,7 @@ export default {
       return [...Array(this.showingDateCount)].map((_) => {
         const status = Math.random() < 0.8 ? 'done' : 'imcomplete'
         const event = {
-          startDate: date,
+          startDate: date.toDate(),
           title: ' ',
           classes: `-${status}`
         }
@@ -44,19 +53,24 @@ export default {
         return event
       }).concat({
         startDate: new Date(2019, 10, 1),
-        endDate: new Date(2019, 10, 6),
+        endDate: new Date(2019, 10, 13),
         classes: '-done',
         title: ' '
       }).concat({
-        startDate: new Date(2019, 10, 10),
-        endDate: new Date(2019, 10, 16),
-        classes: '-imcomplete',
+        startDate: new Date(2019, 10, 17),
+        endDate: new Date(2019, 10, 23),
+        classes: '-done',
         title: ' '
       })
     },
     ...mapGetters({
       date: 'getDate'
     })
+  },
+  watch: {
+    showingYearMonth () {
+      this.fetchStatus()
+    }
   },
   created () {
     this.showDate = this.date
@@ -71,6 +85,19 @@ export default {
     onClickDate (date) {
       this.showDate = date
       this.$store.commit('changeDate', date)
+    },
+    eventClasses (event) {
+      const classes = event.classes
+      if (this.$dayjs(event.startDate).isSame(this.$dayjs(event.endDate))) {
+        classes.push('-oneDay')
+      }
+      return classes
+    },
+    async fetchStatus () {
+      const query = `year=${this.showingYear}&month=${this.showingMonth}`
+      const res = await this.$apiClient('get', `http://0.0.0.0:3000/routines/status?${query}`)
+        .catch((err) => { return err.response })
+      console.log(res)
     }
   }
 }
@@ -153,9 +180,33 @@ export default {
     display: none
   .cv-event
     border: none
-    height: 10px
+    height: 15px
+    &.-oneDay
+      top: 45px
+      width: calc(100% / (7 * 1.5))
+      border-radius: 0 5px 5px 0
+      border-style: solid
+      border-width: 1px
+      border-left: none
+    &:not(.-oneDay)
+      top: 25px
+      border-style: solid
+      border-width: 1px
+      &.toBeContinued:not(.continued)
+        border-radius: 3px 0 0 3px
+        border-right: none
+      &.toBeContinued.continued
+        border-right: none
+        border-left: none
+      &.continued:not(.toBeContinued)
+        border-radius: 0 3px 3px 0
+        border-left: none
+      &:not(.toBeContinued):not(.continued)
+        border-radius: 3px
     &.-done
-      background-color: var(--routeeColorSuccess)
+      background-color: var(--routeeColorSuccessSecondary)
+      border-color: var(--routeeColorSuccess)
     &.-imcomplete
       background-color: lightgray
+      border-color: gray
 </style>
