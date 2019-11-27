@@ -39,9 +39,6 @@ export default {
       calendarEvents: 'getCalendarEvents'
     })
   },
-  created () {
-    this.$store.dispatch('updateCalendarEvents')
-  },
   watch: {
     showingYearMonth () {
       this.$store.dispatch('updateCalendarEvents')
@@ -49,6 +46,9 @@ export default {
     date () {
       this.setShowDate(this.date)
     }
+  },
+  created () {
+    this.$store.dispatch('updateCalendarEvents')
   },
   methods: {
     isToday (date) {
