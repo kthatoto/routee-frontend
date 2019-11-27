@@ -3,7 +3,7 @@ el-card.create
   el-form.create__form(label-width="85px" :model="form" ref="form" :rules="rules")
     el-form-item(label="count")
       el-switch.create__countSwitch(v-model="form.countActive")
-      el-input-number(v-model="form.count" :disabled="!form.countActive" size="mini" :min="1")
+      el-input-number.create__countInput(v-model="form.count" :disabled="!form.countActive" size="mini" :min="1")
     el-form-item(label="name" prop="name" :error="errors.name")
       el-input(v-model="form.name")
     el-form-item(label="description")
@@ -94,7 +94,12 @@ export default {
   &__count
     &Switch
       margin-right: 10px
+    &Input
+      width: 90px
   &__buttons
     display: flex
     justify-content: flex-end
+  >>>
+   .el-card__body
+     padding: 10px
 </style>

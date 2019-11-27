@@ -115,6 +115,9 @@ export default {
   min-width: routineWidth
   width: routineWidth
   margin-right: 15px
+  >>>
+    .el-card__body
+      padding: 10px
   &__header
     position: relative
     h2
