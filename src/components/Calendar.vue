@@ -17,7 +17,6 @@ export default {
   components: { CalendarView, CalendarViewHeader },
   data () {
     return {
-      showDate: null,
       statuses: {
         daily: [],
         weekly: []
@@ -45,27 +44,29 @@ export default {
     },
     ...mapGetters({
       date: 'getDate',
+      showDate: 'getShowingCalendarDate',
       calendarEvents: 'getCalendarEvents'
     })
   },
   watch: {
-    async showingYearMonth () {
-      await this.fetchStatus()
-      this.setCalendarEvents()
+    showingYearMonth () {
+      this.$store.dispatch('updateCalendarEvents')
+      // this.fetchStatus()
+      // this.setCalendarEvents()
+    },
+    date () {
+      this.setShowDate(this.date)
     }
-  },
-  created () {
-    this.showDate = this.date
   },
   methods: {
     isToday (date) {
       return this.$dayjs(this.date).isSame(this.$dayjs(date), 'date')
     },
     setShowDate (date) {
-      this.showDate = date
+      this.$store.commit('changeShowingCalendarDate', date)
     },
     onClickDate (date) {
-      this.showDate = date
+      this.setShowDate(date)
       this.$store.commit('changeDate', date)
     },
     eventClasses (event) {

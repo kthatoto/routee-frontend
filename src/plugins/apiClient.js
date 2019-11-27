@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+
 export default ({ app }, inject) => {
   const apiClient = (method, url, data = null) => {
     return axios({
