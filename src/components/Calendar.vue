@@ -33,26 +33,18 @@ export default {
     showingYearMonth () {
       return `${this.showingYear}-${this.showingMonth}`
     },
-    showingFirstDate () {
-      return this.$dayjs(this.showDate).startOf('month').startOf('week')
-    },
-    showingLastDate () {
-      return this.$dayjs(this.showDate).endOf('month').endOf('week')
-    },
-    showingDateCount () {
-      return this.showingLastDate.diff(this.showingFirstDate, 'day') + 1
-    },
     ...mapGetters({
       date: 'getDate',
       showDate: 'getShowingCalendarDate',
       calendarEvents: 'getCalendarEvents'
     })
   },
+  created () {
+    this.$store.dispatch('updateCalendarEvents')
+  },
   watch: {
     showingYearMonth () {
       this.$store.dispatch('updateCalendarEvents')
-      // this.fetchStatus()
-      // this.setCalendarEvents()
     },
     date () {
       this.setShowDate(this.date)
@@ -75,33 +67,6 @@ export default {
         classes.push('-oneDay')
       }
       return classes
-    },
-    async fetchStatus () {
-      const query = `year=${this.showingYear}&month=${this.showingMonth}`
-      const res = await this.$apiClient('get', `http://0.0.0.0:3000/routines/status?${query}`)
-        .catch((err) => { return err.response })
-      if (res.status !== 200) {
-        return
-      }
-      this.statuses.daily = res.data.daily
-      this.statuses.weekly = res.data.weekly
-    },
-    setCalendarEvents () {
-      const events = ['daily', 'weekly'].map((statusType) => {
-        if (!this.statuses[statusType]) {
-          return []
-        }
-        return this.statuses[statusType].map((s) => {
-          const status = s.total_routines_count === s.done_routines_count ? 'done' : 'imcomplete'
-          return {
-            startDate: new Date(s.start_date),
-            endDate: new Date(s.end_date),
-            title: `${s.done_routines_count} / ${s.total_routines_count}`,
-            classes: `-${status}`
-          }
-        })
-      })
-      this.$store.commit('setCalendarEvents', Array.prototype.concat.apply([], events))
     }
   }
 }
