@@ -37,10 +37,10 @@ el-card.routine(@click="showingMenu = false")
 </template>
 
 <script>
-import { ZoomCenterTransition, CollapseTransition } from 'vue2-transitions'
+import { CollapseTransition } from 'vue2-transitions'
 import RoutineCreateForm from '~/components/RoutineCreateForm'
 export default {
-  components: { RoutineCreateForm, ZoomCenterTransition, CollapseTransition },
+  components: { RoutineCreateForm, CollapseTransition },
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
     dateLabel: { type: String, required: true },

@@ -7,7 +7,7 @@
     .calendar__dayContent(slot="dayContent" slot-scope="{ day }" :class="{'-today': isToday(day)}")
       .dayContent__day {{ day.getDate() }}
     .calendar__event.cv-event(slot="event" slot-scope="{ event }" :class="eventClasses(event)")
-      span {{ event.title }}
+      span(:key="event.id") {{ event.title }}
 </template>
 
 <script>
@@ -15,14 +15,6 @@ import { mapGetters } from 'vuex'
 import { CalendarView, CalendarViewHeader } from 'vue-simple-calendar'
 export default {
   components: { CalendarView, CalendarViewHeader },
-  data () {
-    return {
-      statuses: {
-        daily: [],
-        weekly: []
-      }
-    }
-  },
   computed: {
     showingYear () {
       return this.$dayjs(this.showDate).year()

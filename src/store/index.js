@@ -18,9 +18,10 @@ export const actions = {
       if (!res.data[statusType]) {
         return []
       }
-      return res.data[statusType].map((s) => {
+      return res.data[statusType].map((s, i) => {
         const status = s.total_routines_count === s.done_routines_count ? 'done' : 'imcomplete'
         return {
+          id: `${statusType}:${i}`,
           startDate: new Date(s.start_date),
           endDate: new Date(s.end_date),
           title: `${s.done_routines_count} / ${s.total_routines_count}`,
