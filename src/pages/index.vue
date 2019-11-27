@@ -90,7 +90,7 @@ export default {
       this.weeklyRoutines = res.data.weekly_routines
       this.monthlyRoutines = res.data.monthly_routines
 
-      this.$store.commit('updateCalendarEvents')
+      this.$store.dispatch('updateCalendarEvents')
     },
     prevDate () {
       const prevDate = this.$dayjs(this.localDate).subtract(1, 'day').toDate()
