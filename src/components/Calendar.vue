@@ -31,17 +31,17 @@ export default {
     showingYearMonth () {
       return `${this.showingYear}-${this.showingMonth}`
     },
-    showingDateStartOfMonth () {
+    showingFirstDate () {
       return this.$dayjs(this.showDate).startOf('month').startOf('week')
     },
-    showingDateEndOfMonth () {
+    showingLastDate () {
       return this.$dayjs(this.showDate).endOf('month').endOf('week')
     },
     showingDateCount () {
-      return this.showingDateEndOfMonth.diff(this.showingDateStartOfMonth, 'day') + 1
+      return this.showingLastDate.diff(this.showingFirstDate, 'day') + 1
     },
     computedEvents () {
-      let date = this.showingDateStartOfMonth
+      let date = this.showingFirstDate
       return [...Array(this.showingDateCount)].map((_) => {
         const status = Math.random() < 0.8 ? 'done' : 'imcomplete'
         const event = {
