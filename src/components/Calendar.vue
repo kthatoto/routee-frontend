@@ -7,7 +7,7 @@
     .calendar__dayContent(slot="dayContent" slot-scope="{ day }" :class="{'-today': isToday(day)}")
       .dayContent__day {{ day.getDate() }}
     .calendar__event.cv-event(slot="event" slot-scope="{ event }" :class="eventClasses(event)")
-      span
+      span {{ event.title }}
 </template>
 
 <script>
@@ -18,7 +18,10 @@ export default {
   data () {
     return {
       showDate: null,
-      events: []
+      statuses: {
+        daily: [],
+        weekly: []
+      }
     }
   },
   computed: {
@@ -41,27 +44,21 @@ export default {
       return this.showingLastDate.diff(this.showingFirstDate, 'day') + 1
     },
     computedEvents () {
-      let date = this.showingFirstDate
-      return [...Array(this.showingDateCount)].map((_) => {
-        const status = Math.random() < 0.8 ? 'done' : 'imcomplete'
-        const event = {
-          startDate: date.toDate(),
-          title: ' ',
-          classes: `-${status}`
+      const events = ['daily', 'weekly'].map((statusType) => {
+        if (!this.statuses[statusType]) {
+          return []
         }
-        date = date.add(1, 'day')
-        return event
-      }).concat({
-        startDate: new Date(2019, 10, 1),
-        endDate: new Date(2019, 10, 13),
-        classes: '-done',
-        title: ' '
-      }).concat({
-        startDate: new Date(2019, 10, 17),
-        endDate: new Date(2019, 10, 23),
-        classes: '-done',
-        title: ' '
+        return this.statuses[statusType].map((s) => {
+          const status = s.total_routines_count === s.done_routines_count ? 'done' : 'imcomplete'
+          return {
+            startDate: new Date(s.start_date),
+            endDate: new Date(s.end_date),
+            title: `${s.done_routines_count} / ${s.total_routines_count}`,
+            classes: `-${status}`
+          }
+        })
       })
+      return Array.prototype.concat.apply([], events)
     },
     ...mapGetters({
       date: 'getDate'
@@ -97,7 +94,11 @@ export default {
       const query = `year=${this.showingYear}&month=${this.showingMonth}`
       const res = await this.$apiClient('get', `http://0.0.0.0:3000/routines/status?${query}`)
         .catch((err) => { return err.response })
-      console.log(res)
+      if (res.status !== 200) {
+        return
+      }
+      this.statuses.daily = res.data.daily
+      this.statuses.weekly = res.data.weekly
     }
   }
 }
@@ -179,8 +180,13 @@ export default {
   .cv-day-number
     display: none
   .cv-event
-    border: none
     height: 15px
+    padding: 0
+    text-align: right
+    cursor: pointer
+    span
+      font-size: 10px
+      padding-right: 5px
     &.-oneDay
       top: 45px
       width: calc(100% / (7 * 1.5))
@@ -206,7 +212,9 @@ export default {
     &.-done
       background-color: var(--routeeColorSuccessSecondary)
       border-color: var(--routeeColorSuccess)
+      color: var(--routeeColorSuccess)
     &.-imcomplete
       background-color: lightgray
       border-color: gray
+      color: #333
 </style>
