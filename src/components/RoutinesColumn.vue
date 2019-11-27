@@ -165,7 +165,7 @@ export default {
     background-attachment: local, local, scroll, scroll
   &__item
     display: flex
-    padding: 5px 0
+    padding: 5px 0 5px 10px
     checkboxWidth = 20px
     countWidth = 40px
     &Checkbox
