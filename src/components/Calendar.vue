@@ -1,6 +1,6 @@
 <template lang="pug">
 .calendar
-  calendar-view(:showDate="showDate" :events="computedEvents"
+  calendar-view(:showDate="showDate" :events="calendarEvents"
     @click-date="onClickDate" current-period-label="Today")
     calendar-view-header.calendar__header(slot="header" slot-scope="{ headerProps }"
       @input="setShowDate" :header-props="headerProps")
@@ -43,30 +43,15 @@ export default {
     showingDateCount () {
       return this.showingLastDate.diff(this.showingFirstDate, 'day') + 1
     },
-    computedEvents () {
-      const events = ['daily', 'weekly'].map((statusType) => {
-        if (!this.statuses[statusType]) {
-          return []
-        }
-        return this.statuses[statusType].map((s) => {
-          const status = s.total_routines_count === s.done_routines_count ? 'done' : 'imcomplete'
-          return {
-            startDate: new Date(s.start_date),
-            endDate: new Date(s.end_date),
-            title: `${s.done_routines_count} / ${s.total_routines_count}`,
-            classes: `-${status}`
-          }
-        })
-      })
-      return Array.prototype.concat.apply([], events)
-    },
     ...mapGetters({
-      date: 'getDate'
+      date: 'getDate',
+      calendarEvents: 'getCalendarEvents'
     })
   },
   watch: {
-    showingYearMonth () {
-      this.fetchStatus()
+    async showingYearMonth () {
+      await this.fetchStatus()
+      this.setCalendarEvents()
     }
   },
   created () {
@@ -99,6 +84,23 @@ export default {
       }
       this.statuses.daily = res.data.daily
       this.statuses.weekly = res.data.weekly
+    },
+    setCalendarEvents () {
+      const events = ['daily', 'weekly'].map((statusType) => {
+        if (!this.statuses[statusType]) {
+          return []
+        }
+        return this.statuses[statusType].map((s) => {
+          const status = s.total_routines_count === s.done_routines_count ? 'done' : 'imcomplete'
+          return {
+            startDate: new Date(s.start_date),
+            endDate: new Date(s.end_date),
+            title: `${s.done_routines_count} / ${s.total_routines_count}`,
+            classes: `-${status}`
+          }
+        })
+      })
+      this.$store.commit('setCalendarEvents', Array.prototype.concat.apply([], events))
     }
   }
 }
