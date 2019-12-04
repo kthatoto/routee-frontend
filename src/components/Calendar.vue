@@ -4,9 +4,11 @@
     @click-date="onClickDate" current-period-label="Today")
     calendar-view-header.calendar__header(slot="header" slot-scope="{ headerProps }"
       @input="setShowDate" :header-props="headerProps")
+    .calendar__dayHeader.cv-header-day(slot="dayHeader" slot-scope="{ index, label }")
+      span {{ label }}
     .calendar__dayContent(slot="dayContent" slot-scope="{ day }" :class="{'-today': isToday(day)}")
       .dayContent__day {{ day.getDate() }}
-    .calendar__event.cv-event(slot="event" slot-scope="{ event }" :class="eventClasses(event)")
+    .calendar__event.cv-event(slot="event" slot-scope="{ event }" :class="event.classes")
       span(:key="event.id") {{ event.title }}
 </template>
 
@@ -52,13 +54,6 @@ export default {
     onClickDate (date) {
       this.setShowDate(date)
       this.$store.commit('changeDate', date)
-    },
-    eventClasses (event) {
-      const classes = event.classes
-      if (this.$dayjs(event.startDate).isSame(this.$dayjs(event.endDate))) {
-        classes.push('-oneDay')
-      }
-      return classes
     }
   }
 }
@@ -101,6 +96,8 @@ export default {
     padding: 5px 0
     font-size: 14px
     vertical-align: middle
+    font-weight: bold
+    color: var(--routeeColorBlack)
   .cv-header-nav
     > *
       width: 50px
@@ -109,10 +106,13 @@ export default {
       cursor: pointer
       transition: .1s
       outline: none
+      font-weight: bold
       &:hover
         color: var(--routeeColorPrimary)
         border-color: var(--routeeColorSecondary)
         background-color: var(--routeeColorThirdry)
+    .currentPeriod
+      width: 70px
     .previousPeriod
       border-radius: 3px 0 0 3px
       border-right: none
@@ -122,10 +122,14 @@ export default {
   .cv-header-days
     border: none
     margin: 12px 20px 0
+    padding-top: 30px
+    position: relative
   .cv-header-day
     border: none
     padding-bottom: 12px
-    color: var(--routeeColorBlack)
+    > span
+      color: var(--routeeColorBlack)
+      font-weight: bold
   .cv-weeks
     margin: 0 20px 16px
   .cv-week
