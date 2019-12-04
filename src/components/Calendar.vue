@@ -1,10 +1,13 @@
 <template lang="pug">
 .calendar
-  calendar-view(:showDate="showDate" :events="calendarEvents"
+  calendar-view(:showDate="showDate" :events="events"
     @click-date="onClickDate" current-period-label="Today")
     calendar-view-header.calendar__header(slot="header" slot-scope="{ headerProps }"
       @input="setShowDate" :header-props="headerProps")
     .calendar__dayHeader.cv-header-day(slot="dayHeader" slot-scope="{ index, label }")
+      .calendar__monthlyEvent.cv-event(v-if="index === 'dow0' && monthlyEvent"
+        :class="monthlyEvent.classes")
+        span {{ monthlyEvent.title }}
       span {{ label }}
     .calendar__dayContent(slot="dayContent" slot-scope="{ day }" :class="{'-today': isToday(day)}")
       .dayContent__day {{ day.getDate() }}
@@ -30,7 +33,8 @@ export default {
     ...mapGetters({
       date: 'getDate',
       showDate: 'getShowingCalendarDate',
-      calendarEvents: 'getCalendarEvents'
+      events: 'getCalendarEvents',
+      monthlyEvent: 'getCalendarMonthlyEvent'
     })
   },
   watch: {
@@ -65,7 +69,7 @@ export default {
   background-color: white
   border-radius: 5px
   &__header
-    padding: 12px 20px
+    padding: 12px 20px 24px
     border: none
     border-bottom: 1px solid borderColor
     display: flex
@@ -85,10 +89,17 @@ export default {
       &__day
         font-size: 11px
         padding: 3px 3px 0
+  &__monthlyEvent
+    position: absolute
+    top: 35px
+    left: 20px
+    width: 100px
 </style>
 
 <style lang="stylus">
 .calendar
+  .cv-wrapper
+    position: relative
   .nextYear, .previousYear
     display: none
   .periodLabel
@@ -122,8 +133,6 @@ export default {
   .cv-header-days
     border: none
     margin: 12px 20px 0
-    padding-top: 30px
-    position: relative
   .cv-header-day
     border: none
     padding-bottom: 12px
@@ -159,7 +168,8 @@ export default {
       border-width: 1px
       border-left: none
     &:not(.-oneDay)
-      top: 25px
+      &.calendar__event
+        top: 25px
       border-style: solid
       border-width: 1px
       &.toBeContinued:not(.continued)
