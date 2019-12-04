@@ -19,13 +19,16 @@ export const actions = {
         return []
       }
       return res.data[statusType].map((s, i) => {
-        const status = s.total_routines_count === s.done_routines_count ? 'done' : 'imcomplete'
+        const classes = []
+        classes.push(s.total_routines_count === s.done_routines_count ? '-done' : '-imcomplete')
+        classes.push(statusType === 'monthly' ? '-monthly' : false)
+        classes.push(this.app.dayjs(s.start_date).isSame(this.app.dayjs(s.end_date)) ? '-oneDay' : false)
         return {
           id: `${statusType}:${i}`,
           startDate: new Date(s.start_date),
           endDate: new Date(s.end_date),
           title: `${s.done_routines_count} / ${s.total_routines_count}`,
-          classes: `-${status}`
+          classes: classes.filter(c => c).join(' ')
         }
       })
     })
