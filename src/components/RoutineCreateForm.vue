@@ -70,10 +70,7 @@ export default {
           interval_type: this.type,
           count: this.form.count,
           name: this.form.name,
-          description: this.form.description,
-          year: this.date.getFullYear(),
-          month: this.date.getMonth() + 1,
-          date: this.date.getDate()
+          description: this.form.description
         }
       ).then(() => {
         this.$emit('done')
