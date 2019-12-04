@@ -65,7 +65,7 @@ export default {
       if (!valid) { return }
       this.clearErrors()
       this.$apiClient('post',
-        'http://0.0.0.0:3000/routines',
+        '/routines',
         {
           interval_type: this.type,
           count: this.form.count,

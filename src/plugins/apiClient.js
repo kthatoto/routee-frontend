@@ -5,7 +5,7 @@ export default ({ app }, inject) => {
   const apiClient = (method, url, data = null) => {
     return axios({
       method,
-      url,
+      url: process.env.SERVER_URL + url,
       data,
       headers: { Authorization: localStorage.routeeToken }
     })

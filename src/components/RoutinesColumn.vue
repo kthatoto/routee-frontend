@@ -78,13 +78,13 @@ export default {
       this.$emit('refetch')
     },
     async doCheck (routine) {
-      const res = await this.$apiClient('patch', `http://0.0.0.0:3000/routines/${routine.id}/toggle_achieved`)
+      const res = await this.$apiClient('patch', `/routines/${routine.id}/toggle_achieved`)
       if (res.status === 200) {
         this.$emit('refetch')
       }
     },
     async doDecrement (routine) {
-      const res = await this.$apiClient('patch', `http://0.0.0.0:3000/routines/${routine.id}/decrement`)
+      const res = await this.$apiClient('patch', `/routines/${routine.id}/decrement`)
       if (res.status === 200) {
         this.$emit('refetch')
       }

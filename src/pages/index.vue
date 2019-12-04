@@ -75,7 +75,7 @@ export default {
   async asyncData ({ app, error }) {
     const date = new Date()
     const dateQuery = `year=${date.getFullYear()}&month=${date.getMonth() + 1}&date=${date.getDate()}`
-    const res = await app.apiClient('get', `http://0.0.0.0:3000/home?${dateQuery}`).catch((err) => { return err.response })
+    const res = await app.apiClient('get', `/home?${dateQuery}`).catch((err) => { return err.response })
     return {
       dailyRoutines: res.data.daily_routines,
       weeklyRoutines: res.data.weekly_routines,
@@ -85,7 +85,7 @@ export default {
   methods: {
     async fetchResources () {
       const dateQuery = `year=${this.date.getFullYear()}&month=${this.date.getMonth() + 1}&date=${this.date.getDate()}`
-      const res = await this.$apiClient('get', `http://0.0.0.0:3000/home?${dateQuery}`).catch((err) => { return err.response })
+      const res = await this.$apiClient('get', `/home?${dateQuery}`).catch((err) => { return err.response })
       this.dailyRoutines = res.data.daily_routines
       this.weeklyRoutines = res.data.weekly_routines
       this.monthlyRoutines = res.data.monthly_routines
@@ -114,7 +114,7 @@ export default {
     padding: 40px 10px 0
   &__header
     border-bottom: 1px solid #eee
-    background-color: var(--routeeColorThirdry)
+    background-color: var(--routeeColorPrimary)
   &__datepicker
     margin-bottom: 20px
     width: 350px

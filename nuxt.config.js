@@ -2,6 +2,9 @@
 export default {
   mode: 'spa',
   srcDir: 'src',
+  env: {
+    serverUrl: process.env.SERVER_URL || 'http://0.0.0.0:3000'
+  },
   /*
   ** Headers of the page
   */

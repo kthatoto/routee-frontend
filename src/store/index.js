@@ -10,7 +10,7 @@ export const actions = {
     const showingYear = this.app.dayjs(state.showingCalendarDate).year()
     const showingMonth = this.app.dayjs(state.showingCalendarDate).month() + 1
     const query = `year=${showingYear}&month=${showingMonth}`
-    const res = await this.app.apiClient('get', `http://0.0.0.0:3000/routines/status?${query}`)
+    const res = await this.app.apiClient('get', `/routines/status?${query}`)
       .catch((err) => { return err.response })
     if (res.status !== 200) {
       return
