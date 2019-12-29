@@ -24,7 +24,7 @@ export default ({ app, store, redirect }, inject) => {
       }
       return
     }
-    store.dispatch('signin', { uid: user.uid, email: user.email, emailVerified: user.emailVerified })
+    store.dispatch('signin', user)
     if (!user.emailVerified) {
       app.$message({
         message: 'Please confirm your email address',
