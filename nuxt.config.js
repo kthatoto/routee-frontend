@@ -38,6 +38,7 @@ export default {
   ],
   css: [
     '~/styles/common.styl',
+    '~/styles/element-ui-override.styl',
     'element-ui/lib/theme-chalk/index.css'
   ],
   axios: {},
