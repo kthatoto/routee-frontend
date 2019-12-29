@@ -2,7 +2,8 @@ export default () => ({
   user: {
     uid: null,
     email: null,
-    emailVerified: null
+    emailVerified: null,
+    jwt: null
   },
   calendar: {
     date: new Date(),
