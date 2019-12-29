@@ -3,21 +3,31 @@
   el-card.signin__card
     .signin__header(slot="header")
       h2 Signin
-    el-form.signin__form(label-width="90px" :model="form" ref="form" :rules="rules")
-      transition(name="alert")
-        el-alert.signin__alert(v-if="alert.showing" @close="alert.showing = false"
-          :type="alert.type" :title="alert.message" show-icon)
-      el-form-item(label="email" prop="email")
-        el-input(v-model="form.email")
-      el-form-item(label="password" prop="password")
-        el-input(v-model="form.password" type="password")
-      el-button.signin__button(@click="signin" type="primary" :loading="form.loading") signin
-    .signin__link
-      Link(to="/signup") Singup
-    .signin__link
-      Link(to="/password_reset") Password Reset
-    .signin__link(v-if="emailVerified === false")
-      el-link(type="primary" @click="sendEmailVerification") Send confirmation mail
+    .signin__row
+      el-button.signin__buttonTop(@click="googleAuth")
+        img.customIcon.-r(src="~/assets/icons/google.png")
+        span Signin/Singup with Google
+    .signin__row.-last
+      el-button.signin__buttonTop(@click="showingEmailForm = !showingEmailForm" type="info")
+        icon.icon.-r(name="envelope")
+        span Signin/Signup with Email
+    el-collapse-transition
+      div(v-if="showingEmailForm")
+        el-form.signin__form(label-width="90px" :model="form" ref="form" :rules="rules")
+          transition(name="alert")
+            el-alert.signin__alert(v-if="alert.showing" @close="alert.showing = false"
+              :type="alert.type" :title="alert.message" show-icon)
+          el-form-item(label="email" prop="email")
+            el-input(v-model="form.email")
+          el-form-item(label="password" prop="password")
+            el-input(v-model="form.password" type="password")
+          el-button.signin__button(@click="signin" type="primary" :loading="form.loading") signin
+        .signin__link
+          Link(to="/signup") Singup
+        .signin__link
+          Link(to="/password_reset") Password Reset
+        .signin__link(v-if="emailVerified === false")
+          el-link(type="primary" @click="sendEmailVerification") Send confirmation mail
 </template>
 
 <script>
@@ -26,6 +36,7 @@ export default {
   meta: { shouldGuest: true },
   data () {
     return {
+      showingEmailForm: false,
       form: {
         email: '',
         password: '',
@@ -83,6 +94,12 @@ export default {
         duration: 0,
         showClose: true
       })
+    },
+    async googleAuth () {
+      await this.$firebase.auth().signOut()
+      const GoogleAuthProvider = this.$firebase.auth.GoogleAuthProvider
+      const provider = new GoogleAuthProvider()
+      this.$firebase.auth().signInWithRedirect(provider)
     }
   }
 }
@@ -90,4 +107,10 @@ export default {
 
 <style lang="stylus" scoped>
 sign-form(signin)
+.signin
+  &__row
+    &:not(.-last)
+      margin-bottom: 15px
+  &__buttonTop
+    width: 240px
 </style>
