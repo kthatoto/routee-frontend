@@ -13,6 +13,5 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    "nuxt/no-globals-in-created": 0
   }
 }

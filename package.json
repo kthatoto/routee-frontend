@@ -13,16 +13,17 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/dotenv": "^1.4.0",
     "dayjs": "^1.8.17",
-    "element-ui": "^2.12.0",
+    "element-ui": "^2.4.11",
+    "firebase": "^7.6.0",
     "nuxt": "^2.0.0",
+    "nuxt-stylus-resources-loader": "^2.0.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "vue-awesome": "^3.5.4",
-    "vue-simple-calendar": "^4.2.2",
-    "vue2-transitions": "^0.3.0"
+    "vue-awesome": "^4.0.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
