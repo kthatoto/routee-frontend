@@ -1,15 +1,11 @@
-import Vue from 'vue'
 import axios from 'axios'
 
-export default ({ app }, inject) => {
-  const apiClient = (method, url, data = null) => {
-    return axios({
-      method,
-      url: process.env.serverUrl + url,
-      data,
-      headers: { Authorization: localStorage.routeeToken }
-    })
-  }
-  Vue.prototype.$apiClient = apiClient
-  app.apiClient = apiClient
+const apiClient = (method, url, data = null) => {
+  return axios({
+    method,
+    url: process.env.SERVER_URL + url,
+    data,
+    headers: { Authorization: localStorage.jwt ? `Bearer ${localStorage.jwt}` : null }
+  }).catch((err) => { return err.response })
 }
+export default ({ app }, inject) => { inject('apiClient', apiClient) }
