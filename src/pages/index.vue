@@ -27,6 +27,7 @@ import { mapGetters } from 'vuex'
 import RoutinesColumn from '~/components/RoutinesColumn'
 import Calendar from '~/components/Calendar'
 export default {
+  meta: { auth: true },
   components: { RoutinesColumn, Calendar },
   data () {
     return {
