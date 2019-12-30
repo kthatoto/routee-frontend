@@ -58,7 +58,7 @@ export default {
       return `${this.date.getFullYear()}/${this.date.getMonth() + 1}`
     },
     ...mapGetters({
-      date: 'getDate'
+      date: 'getCalendarDate'
     })
   },
   watch: {
@@ -70,13 +70,13 @@ export default {
       }
     },
     localDate () {
-      this.$store.commit('changeDate', this.localDate)
+      this.$store.commit('changeCalendarDate', this.localDate)
     }
   },
-  async asyncData ({ app, error }) {
+  async asyncData ({ app }) {
     const date = new Date()
     const dateQuery = `year=${date.getFullYear()}&month=${date.getMonth() + 1}&date=${date.getDate()}`
-    const res = await app.apiClient('get', `/home?${dateQuery}`).catch((err) => { return err.response })
+    const res = await app.$apiClient('get', `/home?${dateQuery}`).catch((err) => { return err.response })
     return {
       dailyRoutines: res.data.daily_routines,
       weeklyRoutines: res.data.weekly_routines,
@@ -107,7 +107,7 @@ export default {
 
 <style lang="stylus" scoped>
 .index
-  height: 100vh
+  height: calc(100vh - 60px)
   overflow: hidden
   &__aside
     border-right: 1px solid #eee

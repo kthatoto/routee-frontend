@@ -16,10 +16,10 @@ export default {
     })
   },
   async updateCalendarEvents ({ app, commit, state }) {
-    const showingYear = app.dayjs(state.calendar.showingDate).year()
-    const showingMonth = app.dayjs(state.calendar.showingDate).month() + 1
+    const showingYear = this.$dayjs(state.calendar.showingDate).year()
+    const showingMonth = this.$dayjs(state.calendar.showingDate).month() + 1
     const query = `year=${showingYear}&month=${showingMonth}`
-    const res = await app.apiClient('get', `/routines/status?${query}`)
+    const res = await this.$apiClient('get', `/routines/status?${query}`)
       .catch((err) => { return err.response })
     if (res.status !== 200) {
       return
@@ -34,7 +34,7 @@ export default {
           const classes = []
           classes.push(s.total_routines_count === s.done_routines_count ? '-done' : '-imcomplete')
           classes.push(statusType === 'monthly' ? '-monthly' : false)
-          classes.push(app.dayjs(s.start_date).isSame(app.dayjs(s.end_date)) ? '-oneDay' : false)
+          classes.push(this.$dayjs(s.start_date).isSame(this.$dayjs(s.end_date)) ? '-oneDay' : false)
           return {
             id: `${statusType}:${i}`,
             startDate: new Date(s.start_date),

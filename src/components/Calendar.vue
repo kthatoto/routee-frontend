@@ -31,8 +31,8 @@ export default {
       return `${this.showingYear}-${this.showingMonth}`
     },
     ...mapGetters({
-      date: 'getDate',
-      showDate: 'getShowingCalendarDate',
+      date: 'getCalendarDate',
+      showDate: 'getCalendarShowingDate',
       events: 'getCalendarEvents',
       monthlyEvent: 'getCalendarMonthlyEvent'
     })
@@ -53,11 +53,11 @@ export default {
       return this.$dayjs(this.date).isSame(this.$dayjs(date), 'date')
     },
     setShowDate (date) {
-      this.$store.commit('changeShowingCalendarDate', date)
+      this.$store.commit('changeCalendarShowingDate', date)
     },
     onClickDate (date) {
       this.setShowDate(date)
-      this.$store.commit('changeDate', date)
+      this.$store.commit('changeCalendarDate', date)
     }
   }
 }
