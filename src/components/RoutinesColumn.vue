@@ -18,7 +18,7 @@ el-card.routine(@click="showingMenu = false")
             icon.icon(name="trash-alt")
             span Delete
   .routine__body
-    collapse-transition
+    el-collapse-transition
       .routine__createForm(v-if="mode === 'create'")
         routine-create-form(@cancel="clearMode" :type="type" @done="doneCreate")
     .routine__list
@@ -37,10 +37,9 @@ el-card.routine(@click="showingMenu = false")
 </template>
 
 <script>
-import { CollapseTransition } from 'vue2-transitions'
 import RoutineCreateForm from '~/components/RoutineCreateForm'
 export default {
-  components: { RoutineCreateForm, CollapseTransition },
+  components: { RoutineCreateForm },
   props: {
     type: { type: String, required: true }, // 'daily' | 'weekly' | 'monthly'
     dateLabel: { type: String, required: true },
