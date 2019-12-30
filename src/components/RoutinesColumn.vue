@@ -6,7 +6,7 @@ el-card.routine(@click="showingMenu = false")
       span {{ title }}
       el-dropdown.routine__headerDropdown(trigger="click" @command="handleDropdownCommand")
         span
-          icon.icon.-hover(name="ellipsis-v")
+          icon.icon.-large.-hover(name="ellipsis-v")
         el-dropdown-menu(slot="dropdown")
           el-dropdown-item.routine__headerDropdownItem(command="create")
             icon.icon(name="plus")
@@ -123,12 +123,9 @@ export default {
       display: flex
       justify-content: space-between
       align-items: center
-      .icon
-        width: 20px
-        height: 20px
     &Dropdown
       position: absolute
-      top: 33px
+      top: 18px
       right: -10px
       &Item
         width: 150px
