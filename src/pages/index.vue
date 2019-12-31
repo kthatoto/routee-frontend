@@ -3,7 +3,6 @@ el-container.index
   el-aside.index__aside(width="530px")
     Calendar
   el-container
-    el-header.index__header
     el-main.index__main
       .index__datepicker
         el-button.elo.-right-cr.-right-bn(icon="el-icon-arrow-left" @click="prevDate" type="primary" plain)
