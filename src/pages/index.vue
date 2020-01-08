@@ -38,23 +38,20 @@ export default {
     }
   },
   computed: {
-    displayHeaderDate () {
-      return `${this.date.getFullYear()}/${this.date.getMonth() + 1}/${this.date.getDate()}`
-    },
     beginingOfWeekDate () {
-      return new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - this.date.getDay())
+      return this.$dayjs(this.date).startOf('week')
     },
     endOfWeekDate () {
-      return new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + (6 - this.date.getDay()))
+      return this.$dayjs(this.date).endOf('week')
     },
     displayDate () {
-      return `${this.date.getMonth() + 1}/${this.date.getDate()}`
+      return this.$dayjs(this.date).format('MM/DD')
     },
     displayWeek () {
-      return `${this.beginingOfWeekDate.getMonth() + 1}/${this.beginingOfWeekDate.getDate()}~${this.endOfWeekDate.getMonth() + 1}/${this.endOfWeekDate.getDate()}`
+      return `${this.beginingOfWeekDate.format('MM/DD')}~${this.endOfWeekDate.format('MM/DD')}`
     },
     displayMonth () {
-      return `${this.date.getFullYear()}/${this.date.getMonth() + 1}`
+      return `${this.$dayjs(this.date).format('YYYY/MM')}`
     },
     ...mapGetters({
       date: 'getCalendarDate'
@@ -74,7 +71,7 @@ export default {
   },
   async asyncData ({ app }) {
     const date = new Date()
-    const dateQuery = `year=${date.getFullYear()}&month=${date.getMonth() + 1}&date=${date.getDate()}`
+    const dateQuery = `date=${app.$dayjs(date).format('YYYY-MM-DD')}`
     const res = await app.$apiClient('get', `/home?${dateQuery}`).catch((err) => { return err.response })
     return {
       dailyRoutines: res.data.daily_routines,
@@ -84,7 +81,7 @@ export default {
   },
   methods: {
     async fetchResources () {
-      const dateQuery = `year=${this.date.getFullYear()}&month=${this.date.getMonth() + 1}&date=${this.date.getDate()}`
+      const dateQuery = `date=${this.$dayjs(this.date).format('YYYY-MM-DD')}`
       const res = await this.$apiClient('get', `/home?${dateQuery}`).catch((err) => { return err.response })
       this.dailyRoutines = res.data.daily_routines
       this.weeklyRoutines = res.data.weekly_routines
