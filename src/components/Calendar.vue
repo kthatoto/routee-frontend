@@ -170,8 +170,6 @@ export default {
     &:not(.-oneDay)
       &.calendar__event
         top: 25px
-      border-style: solid
-      border-width: 1px
       &.toBeContinued:not(.continued)
         border-radius: 3px 0 0 3px
         border-right: none
