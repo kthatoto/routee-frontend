@@ -37,7 +37,8 @@ export default {
     '@/plugins/globalComponents'
   ],
   buildModules: [
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxt/typescript-build'
   ],
   modules: [
     '@nuxtjs/axios',
